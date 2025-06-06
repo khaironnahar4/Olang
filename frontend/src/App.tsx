@@ -6,6 +6,7 @@ import NotificationPage from "./Pages/NotificationPage";
 import OnboardingPage from "./Pages/OnboardingPage";
 import ChatPage from "./Pages/ChatPage";
 import CallPage from "./Pages/CallPage";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/call" element={<CallPage />} />
       </Routes>
+
+      <Toaster />
     </div>
   );
 }
