@@ -9,9 +9,12 @@ import CallPage from "./Pages/CallPage";
 import { Toaster } from "react-hot-toast";
 import PageLoader from "./components/PageLoader.tsx";
 import useAuthUser from "./hooks/useAuthUser.ts";
+import Layout from "./components/Layout.tsx";
+import { useThemeStore } from "./store/useThemeStore.ts";
 
 function App() {
   const { isLoading, authUser } = useAuthUser();
+  const {theme} = useThemeStore();
 
   const isAuthenticated = Boolean(authUser);
   const isOnboarded = authUser?.isOnboarded;
@@ -19,13 +22,15 @@ function App() {
   if (isLoading) return <PageLoader />;
 
   return (
-    <div>
+    <div data-theme={theme} >
       <Routes>
         <Route
           path="/"
           element={
             isAuthenticated && isOnboarded ? (
-              <HomePage />
+              <Layout showSidebar>
+                <HomePage />
+              </Layout>
             ) : (
               <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
             )
@@ -33,11 +38,17 @@ function App() {
         />
         <Route
           path="/signup"
-          element={!isAuthenticated ? <SignupPage /> : <Navigate to={"/"} />}
+          element={!isAuthenticated ? <SignupPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />}
         />
         <Route
           path="/login"
-          element={!isAuthenticated ? <LoginPage /> : <Navigate to={"/"} />}
+          element={
+            !isAuthenticated ? (
+              <LoginPage />
+            ) : (
+              <Navigate to={isOnboarded ? "/" : "/onboarding"} />
+            )
+          }
         />
         <Route
           path="/notification"
