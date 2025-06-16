@@ -71,7 +71,18 @@ const ChatPage = () => {
     initChat();
   }, [authUser, tokenData, targetUserId]);
 
-  const handleVideoCall = () => {}
+  const handleVideoCall = () => {
+    if(channel){
+      const callURL = `${window.location.origin}/call/${channel.id}`;
+
+      channel.sendMessage({
+        text: `I have started a new video call. Join me here: ${callURL}`
+      })
+
+      toast.success("Video call link send successfully.")
+    }
+  }
+  // console.log(channel);
 
   if (loading || !chatClient || !channel) return <ChatLoader />;
 
