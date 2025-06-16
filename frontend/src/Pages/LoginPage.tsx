@@ -1,8 +1,16 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { Link } from "react-router";
 import { ShipWheelIcon } from "lucide-react";
 import loginImg from "../assets/Video-call.png"
 import useLogin from "../hooks/useLogin";
+
+interface ApiError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
 
 
 const LoginPage = () => {
@@ -13,7 +21,7 @@ const LoginPage = () => {
 
  const{isPending, error, loginMutation} =  useLogin();
 
-  const handleLogin = (e) => {
+  const handleLogin = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     loginMutation(loginData);
   }
@@ -37,7 +45,7 @@ const LoginPage = () => {
           {/* ERROR MESSAGE DISPLAY */}
           {error && (
             <div className="alert alert-error mb-4">
-              <span>{error.response.data.message}</span>
+              <span>{(error as ApiError)?.response?.data?.message || "An error occured"}</span>
             </div>
           )}
 

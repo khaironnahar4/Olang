@@ -1,8 +1,15 @@
 import { Link } from "react-router"
 import { LANGUAGE_TO_FLAG } from "../constants";
 
+type Friend = {
+  fullName: string,
+  profilePicture: string,
+  nativeLanguage: string,
+  learningLanguage: string,
+  _id: string
+}
 
-const FriendCard = ({friend}) => {
+const FriendCard = ({friend}: {friend: Friend}) => {
   return (
    <div className="card bg-base-200 hover:shadow-md transition-shadow">
       <div className="card-body p-4">
@@ -35,7 +42,7 @@ const FriendCard = ({friend}) => {
 
 export default FriendCard;
 
-export function getLanguageFlag(language) {
+export function getLanguageFlag(language : string) {
   if (!language) return null;
 
   const langLower = language.toLowerCase();

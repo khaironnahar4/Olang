@@ -1,8 +1,13 @@
+import type { ReactNode } from "react"
 import Navbar from "./Navbar"
 import Sidebar from "./Sidebar"
 
+type LayoutProp = {
+  children : ReactNode,
+  showSidebar?: boolean
+}
 
-const Layout = ({children, showSidebar  = false}) => {
+const Layout = ({children, showSidebar  = false}: LayoutProp) => {
   return (
     <div className="min-h-screen">
         <div className="flex">

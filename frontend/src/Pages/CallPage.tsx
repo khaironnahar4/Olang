@@ -8,6 +8,7 @@ import {
   StreamCall,
   StreamVideo,
   StreamVideoClient,
+  Call,
   useCallStateHooks,
   StreamTheme,
   SpeakerLayout,
@@ -20,11 +21,15 @@ import PageLoader from "../components/PageLoader";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
+type callPageParams = {
+  id: string
+}
+
 const CallPage = () => {
-  const { id: callId } = useParams();
-  const [client, setClient ] = useState(null);
-  const [  call, setCall ] = useState(null);
-  const [ isConnecting, setIsConnecting ] = useState(true);
+  const { id: callId } = useParams<callPageParams>();
+  const [client, setClient ] = useState<StreamVideoClient | null>(null);
+  const [  call, setCall ] = useState<Call | null>(null);
+  const [ isConnecting, setIsConnecting ] = useState<boolean>(true);
 
   const { authUser, isLoading } = useAuthUser();
 
@@ -97,7 +102,9 @@ const CallContent = () => {
 
   const navigate = useNavigate();
 
-  if (callingState === CallingState.LEFT) return navigate("/");
+  useEffect(()=>{
+    if (callingState === CallingState.LEFT) navigate("/");
+  }, [callingState, navigate]);
 
   return (
     <StreamTheme>

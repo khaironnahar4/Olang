@@ -1,8 +1,16 @@
 import { ShipWheelIcon } from "lucide-react";
-import { useState } from "react"
+import React, { useState } from "react"
 import { Link } from "react-router";
 import img from "../assets/Video-call.png";
 import useSignup from "../hooks/useSignup";
+
+interface ApiError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
 
 
 const SignupPage = () => {
@@ -14,7 +22,7 @@ const SignupPage = () => {
 
   const {isPending, error, signupMutation} = useSignup();
 
-  const handleSignup = (e) => {
+  const handleSignup = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signupMutation(signupData)
   }
@@ -39,7 +47,7 @@ const SignupPage = () => {
           {/* ERROR MESSAGE IF ANY */}
           {error && (
             <div className="alert alert-error mb-4">
-              <span>{error?.response?.data?.message}</span>
+              <span>{(error as ApiError)?.response?.data?.message || "An error occured" }</span>
             </div>
           )}
 

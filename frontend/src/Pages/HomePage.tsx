@@ -7,6 +7,20 @@ import NoFriendFound from "../components/NoFriendFound";
 import FriendCard, { getLanguageFlag } from "../components/FriendCard";
 import { capitialize } from "../lib/utils";
 
+type User = {
+  _id: string;
+  fullName: string;
+  profilePicture: string;
+  location?: string;
+  nativeLanguage: string;
+  learningLanguage: string;
+  bio?: string;
+};
+
+type FriendRequest = {
+  recipient: User;
+};
+
 const HomePage = () => {
   const queryClient = useQueryClient();
   const [outgoingRequestIds, setOutgoingRequestIds] = useState(new Set());
@@ -34,7 +48,7 @@ const HomePage = () => {
  useEffect(() => {
     const outgoingIds = new Set();
     if (outgoingFriends && outgoingFriends.length > 0) {
-      outgoingFriends.forEach((req) => {
+      outgoingFriends.forEach((req: FriendRequest) => {
         outgoingIds.add(req.recipient._id);
       });
       setOutgoingRequestIds(outgoingIds);
@@ -61,7 +75,7 @@ const HomePage = () => {
           <NoFriendFound />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {friends.map((friend) => (
+            {friends.map((friend: User) => (
               <FriendCard key={friend._id} friend={friend} />
             ))}
           </div>
@@ -92,7 +106,7 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedUsers.map((user) => {
+              {recommendedUsers.map((user: User) => {
                 const hasRequestBeenSent = outgoingRequestIds.has(user._id);
 
                 return (

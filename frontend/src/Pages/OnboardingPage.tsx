@@ -1,10 +1,13 @@
-import { useState } from "react";
+import React,{ useState } from "react";
 import useAuthUser from "../hooks/useAuthUser"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { completeOnboarding } from "../lib/api";
 import toast from "react-hot-toast";
 import { CameraIcon, LoaderIcon, MapPinIcon, ShipWheelIcon, ShuffleIcon } from "lucide-react";
 import { LANGUAGES } from "../constants";
+import { AxiosError } from "axios";
+
+
 
 const OnboardingPage = () => {
   const {authUser} = useAuthUser();
@@ -25,14 +28,14 @@ const OnboardingPage = () => {
       toast.success("Profile onboarded successfully!");
       queryClient.invalidateQueries({queryKey: ["authUser"]})
     },
-    onError: (error) => {
+    onError: (error: AxiosError<{message: string}>) => {
       // console.log(error.response.data.message);
       
-      toast.error(error.response.data.message)
+      toast.error(error?.response?.data?.message || "Something went wrong.")
     }
   })
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onboardingMutation(formState);
   }

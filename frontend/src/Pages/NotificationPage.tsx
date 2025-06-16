@@ -3,6 +3,7 @@ import { acceptFriendRequest, getFriendRequests } from "../lib/api";
 import { BellIcon, ClockIcon, MessageSquareIcon, UserCheckIcon } from "lucide-react";
 import NoNotificationsFound from "../components/NoNotificationsFound";
 
+import type { FriendRequest, AcceptedRequest } from "../lib/api";
 
 const NotificationPage = () => {
   const queryClient = useQueryClient();
@@ -43,7 +44,7 @@ const NotificationPage = () => {
                 </h2>
 
                 <div className="space-y-3">
-                  {incomingRequests.map((request) => (
+                  {incomingRequests.map((request: FriendRequest) => (
                     <div
                       key={request._id}
                       className="card bg-base-200 shadow-sm hover:shadow-md transition-shadow"
@@ -91,7 +92,7 @@ const NotificationPage = () => {
                 </h2>
 
                 <div className="space-y-3">
-                  {acceptedRequests.map((notification) => (
+                  {acceptedRequests.map((notification: AcceptedRequest) => (
                     <div key={notification._id} className="card bg-base-200 shadow-sm">
                       <div className="card-body p-4">
                         <div className="flex items-start gap-3">
